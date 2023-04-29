@@ -1,0 +1,28 @@
+{
+  "name": "asunder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/background.js",
+  "scripts": {
+    "compile-tsc": "rm -r ./dist & npx tsc",
+    "copy-public": "cp -r ./public/* ./dist/",
+    "build": "npm run compile-tsc && npm run copy-public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinalebachew/Asunder.git"
+  },
+  "author": "Martin Alebachew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/martinalebachew/Asunder/issues"
+  },
+  "homepage": "https://github.com/martinalebachew/Asunder#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.0.234"
+  },
+  "dependencies": {
+    "tsc": "^2.0.4",
+    "typescript": "^5.0.4"
+  }
+}
