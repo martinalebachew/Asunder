@@ -6,7 +6,9 @@
   "scripts": {
     "compile-tsc": "rm -r ./dist & npx tsc",
     "copy-public": "cp -r ./public/* ./dist/",
-    "build": "npm run compile-tsc && npm run copy-public"
+    "build": "npm run compile-tsc && npm run copy-public",
+    "eslint": "npx eslint \"src/**\"",
+    "eslint-fix": "npx eslint \"src/**\" --fix"
   },
   "repository": {
     "type": "git",
@@ -19,7 +21,10 @@
   },
   "homepage": "https://github.com/martinalebachew/Asunder#readme",
   "devDependencies": {
-    "@types/chrome": "^0.0.234"
+    "@types/chrome": "^0.0.234",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "eslint": "^8.39.0"
   },
   "dependencies": {
     "tsc": "^2.0.4",
