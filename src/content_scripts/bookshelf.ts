@@ -3,6 +3,7 @@
 
 window.addEventListener("load", onUILoaded);
 const download_port = chrome.runtime.connect({name: "download_port"});
+const token = localStorage["token"]; // Classoos stores session token on local storage
 
 function onUILoaded() {
     // A workaround for false-positive UI loaded events from Classoos.
@@ -27,5 +28,5 @@ function pinButtonToBookCovers() {
 }
 
 function downloadBookHandler(bookId: string) {
-    download_port.postMessage({bookId: bookId});
+    download_port.postMessage({ bookId: bookId, token: token });
 }
