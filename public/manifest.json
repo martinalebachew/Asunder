@@ -22,6 +22,10 @@
   },
 
   "permissions": ["tabs"],
+  "host_permissions": [
+    "https://dwb.classoos.com/*",
+    "https://my.classoos.com/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },

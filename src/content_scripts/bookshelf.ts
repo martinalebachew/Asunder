@@ -22,11 +22,7 @@ function pinButtonToBookCovers() {
 
         const downloadButton = document.createElement("img");
         downloadButton.src = chrome.runtime.getURL("assets/icon-32.png");
-        downloadButton.addEventListener("click", () => { downloadBookHandler(bookId); });
+        downloadButton.addEventListener("click", () => { download_port.postMessage({ bookId: bookId, token: token }); });
         book.appendChild(downloadButton);
     }
-}
-
-function downloadBookHandler(bookId: string) {
-    download_port.postMessage({ bookId: bookId, token: token });
 }
