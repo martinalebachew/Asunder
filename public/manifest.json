@@ -27,8 +27,8 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://my.classoos.com/il/books/textbooks"],
-      "js": ["content_scripts/library.js"]
+      "matches": ["https://my.classoos.com/il/books/textbooks", "https://my.classoos.com/viewbook/*"],
+      "js": ["content_scripts/bookshelf.js"]
     }
   ]
 }
