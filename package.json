@@ -2,7 +2,6 @@
   "name": "asunder",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/background.js",
   "scripts": {
     "compile-tsc": "rm -r ./dist & npx tsc",
     "copy-public": "cp -r ./public/* ./dist/",

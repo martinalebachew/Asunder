@@ -1,18 +1,36 @@
 // background.ts
 // (C) Martin Alebachew, 2023
 
-chrome.runtime.onConnect.addListener(function(port) {
-    console.assert(port.name === "download_port");
-    port.onMessage.addListener(({ bookId, token }: { bookId: string, token: string }) => {
-        downloadBookHandler(bookId, token);
-    });
+let passwordToBlobB64: {[_: string]: string} = {};
+
+chrome.runtime.onConnect.addListener((port) => {
+    switch (port.name) {
+        case "download_port":
+            port.onMessage.addListener(({ bookId, token }: { bookId: string, token: string }) => {
+                downloadBookHandler(bookId, token);
+            });
+            break;
+
+        case "base64":
+            port.onMessage.addListener((password: string) => {
+                port.postMessage({
+                    password: password,
+                    blob_b64: passwordToBlobB64[password]
+                });
+
+                delete passwordToBlobB64[password];
+            });
+            break;
+
+        default:
+            throw `[SW ERROR] Connection on unknown port named ${port.name}.`;
+    }
 });
 
 async function downloadBookHandler(bookId: string, token: string) {
     const { licenseId, userId, password } = await getLicense(bookId, token);
     const downloadUrl = await getDownloadUrl(licenseId, userId, bookId, token);
-    console.log(downloadUrl);
-    // removePdfPassword(password);
+    await savePdf(downloadUrl, password, `${bookId}.pdf`);
 }
 
 async function getLicense(bookId: string, token: string) {
@@ -40,4 +58,28 @@ async function getDownloadUrl(licenseId: string, userId: string, bookId: string,
 
     if (!response.Success) throw `[PDF URL ERR] API denied access with message ${response.ErrorMessage} (Code ${response.ErrorCode})`;
     return response.DownloadURL;
+}
+
+async function savePdf(downloadUrl: string, password: string, filename: string) {
+    const rawBlob = await (await fetch(downloadUrl, {
+        method: "GET"
+    })).blob();
+
+    const pdfBlob = new Blob([rawBlob], { type: "application/pdf" });
+    const b64 = await blobToBase64(pdfBlob);
+    passwordToBlobB64[password] = JSON.stringify({ blob: b64 });
+
+    // TODO: Replace with chrome.offscreen API
+    await chrome.windows.create({ url: `donwloader/donwloader.html?password=${password}&filename=${filename}`, state: "minimized" });
+}
+
+function blobToBase64(blob: Blob) : Promise<string> {
+    /* Modified version of
+       https://stackoverflow.com/questions/18650168/convert-blob-to-base64
+     */
+    return new Promise((resolve, _) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(blob);
+    });
 }
