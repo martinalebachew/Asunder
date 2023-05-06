@@ -13,7 +13,20 @@ encryption and convert it to comply with most readers.
 > purposes only, and the author of this project is not responsible for any potential consequences
 > caused by using it.
 
-### Source of binaries
+## Development Map
+### Asunder Extension
+- [x] Download buttons on bookshelf
+- [x] Download button in book reader
+- [x] Download and decryption data fetching
+- [ ] Communication with Asunder-decryptor
+
+### Asunder Decryptor
+- [ ] Communication with the extension
+- [ ] PDF downloading using curl
+- [ ] PDF decryption using Apryse binaries
+- [ ] Modification of Apryse binaries
+
+## Source of binaries
 The source code for the binaries is proprietary and available only to Apryse.
 Yet, the Apryse SDK for multiple languages contains a compiled dynamic library
 binaries and SWIG wrappers. We use those binaries in Asunder-decryptor.
