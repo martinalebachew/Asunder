@@ -12,3 +12,11 @@ encryption and convert it to comply with most readers.
 > responsiblity for any violation of Classoos TOS (TL;DR). This project was made for educational
 > purposes only, and the author of this project is not responsible for any potential consequences
 > caused by using it.
+
+### Source of binaries
+The source code for the binaries is proprietary and available only to Apryse.
+Yet, the Apryse SDK for multiple languages contains a compiled dynamic library
+binaries and SWIG wrappers. We use those binaries in Asunder-decryptor.
+Future versions might use slightly modified versions of those binaries, that
+does not include the Apryse watermark on downloaded PDFs and does not
+require a trial key.
