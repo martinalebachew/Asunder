@@ -21,11 +21,10 @@
     "default_popup": "popup/popup.html"
   },
 
-  "permissions": ["tabs", "offscreen", "downloads"],
+  "permissions": ["tabs", "nativeMessaging"],
   "host_permissions": [
     "https://dwb.classoos.com/*",
-    "https://my.classoos.com/*",
-    "https://kalsefercontent.blob.core.windows.net/booksdownloads/*"
+    "https://my.classoos.com/*"
   ],
   "background": {
     "service_worker": "background.js"
