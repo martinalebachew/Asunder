@@ -3,7 +3,7 @@
 Asunder is a Chrome extension for downloading Classoos digital textbooks as PDFs.
 This repository contains the extension, which retrieves all other relevant information for
 download and decryption. Then, the extension communicates with another application,
-**Asunder-decryptor**, which downloads the PDF file and calls the Apryse (PDFTron) dynamic
+**Asunder-Decryptor**, which downloads the PDF file and calls the Apryse (PDFTron) dynamic
 library binaries (or slightly modified versions). Those binaries remove the PDF
 encryption and convert it to comply with most readers.
 
@@ -14,13 +14,13 @@ encryption and convert it to comply with most readers.
 > caused by using it.
 
 ## Development Map
-### Asunder Extension
+### Asunder-Extension
 - [x] Download buttons on bookshelf
 - [x] Download button in book reader
 - [x] Download and decryption data fetching
 - [ ] Communication with Asunder-decryptor
 
-### Asunder Decryptor
+### Asunder-Decryptor
 - [ ] Communication with the extension
 - [ ] PDF downloading using curl
 - [ ] PDF decryption using Apryse binaries
