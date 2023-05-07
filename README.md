@@ -22,14 +22,11 @@ encryption and convert it to comply with most readers.
 
 ### Asunder-Decryptor
 - [ ] Communication with the extension
-- [ ] PDF downloading using curl
-- [ ] PDF decryption using Apryse binaries
-- [ ] Modification of Apryse binaries
+- [x] PDF downloading using curl
+- [x] PDF decryption and linearization
+- [ ] Modifications of PDFNetC
 
-## Source of binaries
-The source code for the binaries is proprietary and available only to Apryse.
-Yet, the Apryse SDK for multiple languages contains a compiled dynamic library
-binaries and SWIG wrappers. We use those binaries in Asunder-decryptor.
+## Modified PDFNetC
+PDFNetC is the official Apryse C++ library used in Asunder for decryption.
 Future versions might use slightly modified versions of those binaries, that
-does not include the Apryse watermark on downloaded PDFs and does not
-require a trial key.
+does not include the Apryse watermark on downloaded PDFs nor require a trial key.

@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 #include <PDF/PDFNet.h>
+#include <PDF/PDFDoc.h>
 #include <boost/filesystem.hpp>
 
 #define PDFTRON_KEY "YOUR_TRIAL_KEY_HERE"
@@ -72,15 +73,16 @@ void sendResponse(bool success) {
 int main(int argc, char **argv) {
   // Get request fields
   json request = fetchRequest();
+  std::string downloadUrl = request["downloadUrl"];
+  std::string password = request["password"];
+  std::string filename = request["filename"];
 
   // Obtain target paths
-  std::string filename = request["filename"];
   fs::path currentPath(fs::current_path()); // TODO: Replace with user's downloads path
   fs::path tempPath = currentPath / (filename + ".tmp");
   fs::path outputPath = currentPath / (filename + ".pdf");
 
   // Download PDF
-  std::string downloadUrl = request["downloadUrl"];
   bool downloaded = downloadFile(downloadUrl.c_str(), tempPath.c_str());
   if (!downloaded) {
     sendResponse(false);
@@ -88,7 +90,13 @@ int main(int argc, char **argv) {
   }
 
   // Decrypt PDF
+  // TODO: Implement temp buffer
+  // TODO: Implement exception handling
   PDFNet::Initialize(PDFTRON_KEY);
+  PDF::PDFDoc document(tempPath.string());
+  document.InitStdSecurityHandler(password);
+  document.RemoveSecurity();
+  document.Save(outputPath.string(), SDF::SDFDoc::e_linearized);
 
   sendResponse(true);
 }
