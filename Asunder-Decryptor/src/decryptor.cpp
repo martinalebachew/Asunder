@@ -7,6 +7,7 @@
 #include <curl/curl.h>
 #include <PDF/PDFNet.h>
 #include <PDF/PDFDoc.h>
+#include <PDF/PDFNetInternalTools.h>
 #include <boost/filesystem.hpp>
 
 #define PDFTRON_KEY "YOUR_TRIAL_KEY_HERE"
@@ -92,6 +93,8 @@ int main(int argc, char **argv) {
   // Decrypt PDF
   // TODO: Implement temp buffer
   // TODO: Implement exception handling
+
+  PDF::PDFNetInternalTools::SetDefaultLogThreshold(PDF::PDFNetInternalTools::LogLevel::eDisabled); // Disable PDFNet logging
   PDFNet::Initialize(PDFTRON_KEY);
   PDF::PDFDoc document(tempPath.string());
   document.InitStdSecurityHandler(password);
