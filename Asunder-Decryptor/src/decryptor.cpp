@@ -36,4 +36,12 @@ public:
 int main(int argc, char **argv) {
   Log log;
   if (argc > 1) log.logToStdout = false;
+
+  uint32_t inputSize;
+  std::cin.read((char*)&inputSize, sizeof(inputSize));
+  char *inputString = new char[inputSize];
+  std::cin.read(inputString, inputSize);
+  std::string response = R"({"success": true)";
+  std::cout << (uint32_t)response.size();
+  std::cout << response.c_str() << std::flush;
 }
