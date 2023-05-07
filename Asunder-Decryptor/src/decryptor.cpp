@@ -10,11 +10,16 @@ private:
   std:: string logged_text;
 
 public:
+  bool logToStdout = false;
+
   void append(std::string text) {
-    if (!firstLine) logged_text += "\n";
-    else firstLine = false;
-    
-    logged_text += text;
+    if (logToStdout) std::cout << text << std::endl;
+    else {
+      if (!firstLine) logged_text += "\n";
+      else firstLine = false;
+
+      logged_text += text;
+    }
   }
 
   void flush() {
@@ -27,7 +32,7 @@ public:
   }
 };
 
-int main() {
-  std::cout << "Hello World!" << std::endl;
-  std::cin.get();
+int main(int argc, char **argv) {
+  Log log;
+  if (argc > 1) log.logToStdout = true;
 }
