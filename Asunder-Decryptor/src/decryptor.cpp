@@ -3,7 +3,12 @@
 
 #include <iostream>
 #include <fstream>
+#include <nlohmann/json.hpp>
 #include <boost/filesystem.hpp>
+
+using json = nlohmann::json;
+
+
 class Log {
 private:
   bool firstLine = true;
@@ -39,9 +44,19 @@ int main(int argc, char **argv) {
 
   uint32_t inputSize;
   std::cin.read((char*)&inputSize, sizeof(inputSize));
+
   char *inputString = new char[inputSize];
   std::cin.read(inputString, inputSize);
+  log.append("Raw JSON input >>");
+  log.append((std::string)inputString);
+
+  json request = json::parse(inputString);
+  std::string downloadUrl = request["downloadUrl"];
+  std::string password = request["password"];
+  std::string filename = request["filename"];
+
   std::string response = R"({"success": true)";
   std::cout << (uint32_t)response.size();
   std::cout << response.c_str() << std::flush;
+  log.append("Sent response. Exiting.");
 }
