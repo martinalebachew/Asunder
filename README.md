@@ -16,12 +16,12 @@ encryption and convert it to comply with most readers.
 ## Development Map
 ### Asunder-Extension
 - [x] Download buttons on bookshelf
-- [x] Download button in book reader
+- [ ] Download button in book reader
 - [x] Download and decryption data fetching
-- [ ] Communication with Asunder-decryptor
+- [x] Communication with Asunder-decryptor
 
 ### Asunder-Decryptor
-- [ ] Communication with the extension
+- [x] Communication with the extension
 - [x] PDF downloading using curl
 - [x] PDF decryption and linearization
 - [ ] Modifications of PDFNetC
