@@ -23,6 +23,7 @@ public:
   }
 
   void flush() {
+    if (logToStdout) return;
     std::ofstream file("asdlog.txt");
     file.write(logged_text.c_str(), logged_text.size());
   }
