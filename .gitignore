@@ -4,6 +4,9 @@
 # JetBrains IDEs
 .idea
 
+# build files
+build
+
 ## NodeJS
 # Logs
 logs
