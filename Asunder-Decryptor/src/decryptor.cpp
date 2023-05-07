@@ -10,7 +10,7 @@ private:
   std:: string logged_text;
 
 public:
-  bool logToStdout = false;
+  bool logToStdout = true;
 
   void append(std::string text) {
     if (logToStdout) std::cout << text << std::endl;
@@ -34,5 +34,5 @@ public:
 
 int main(int argc, char **argv) {
   Log log;
-  if (argc > 1) log.logToStdout = true;
+  if (argc > 1) log.logToStdout = false;
 }
