@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
   // TODO: Implement temp buffer
   // TODO: Implement exception handling
 
-  PDF::PDFNetInternalTools::SetDefaultLogThreshold(PDF::PDFNetInternalTools::LogLevel::eDisabled); // Disable PDFNet logging
+  PDFNet::SetLogLevel(PDFNet::LogLevel::e_LogLevel_Off); // Disable PDFNet logging
   PDFNet::Initialize(PDFTRON_KEY);
   PDF::PDFDoc document(tempPath.string());
   document.InitStdSecurityHandler(password);
