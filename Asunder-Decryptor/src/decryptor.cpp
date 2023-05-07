@@ -5,10 +5,14 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
+#include <PDF/PDFNet.h>
 #include <boost/filesystem.hpp>
+
+#define PDFTRON_KEY "YOUR_TRIAL_KEY_HERE"
 
 namespace fs = boost::filesystem;
 using json = nlohmann::json;
+using namespace pdftron;
 
 size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
   size_t written = fwrite(ptr, size, nmemb, stream);
@@ -78,6 +82,13 @@ int main(int argc, char **argv) {
   // Download PDF
   std::string downloadUrl = request["downloadUrl"];
   bool downloaded = downloadFile(downloadUrl.c_str(), tempPath.c_str());
-  if (!downloaded) return sendResponse(false);
+  if (!downloaded) {
+    sendResponse(false);
+    return 1;
+  }
+
+  // Decrypt PDF
+  PDFNet::Initialize(PDFTRON_KEY);
+
   sendResponse(true);
 }
