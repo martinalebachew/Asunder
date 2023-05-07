@@ -1,8 +1,14 @@
 # macOS files
 .DS_Store
 
+# Dependencies directory
+dep
+
 # JetBrains IDEs
 .idea
+
+# VSCode
+.vscode
 
 # build files
 build
