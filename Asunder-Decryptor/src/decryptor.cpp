@@ -94,12 +94,18 @@ int main(int argc, char **argv) {
   // TODO: Implement temp buffer
   // TODO: Implement exception handling
 
-  PDFNet::SetLogLevel(PDFNet::LogLevel::e_LogLevel_Off); // Disable PDFNet logging
+  // Disable PDFNet logging by redirecting stdout
+  std::streambuf *old = std::cout.rdbuf(nullptr);
+
   PDFNet::Initialize(PDFTRON_KEY);
   PDF::PDFDoc document(tempPath.string());
   document.InitStdSecurityHandler(password);
   document.RemoveSecurity();
   document.Save(outputPath.string(), SDF::SDFDoc::e_linearized);
+  PDFNet::Terminate();
+
+  // Enable stdout logging for native messaging
+  std::cout.rdbuf(old);
 
   sendResponse(true);
 }
