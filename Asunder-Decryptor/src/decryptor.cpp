@@ -109,8 +109,8 @@ void sendSuccess(std::string filename) {
   sendResponse(true, "filename", filename);
 }
 
-void sendFailure(std::string message) {
-  sendResponse(false, "message", message);
+void sendFailure(std::string error) {
+  sendResponse(false, "error", error);
 }
 
 int main(int argc, char **argv) {

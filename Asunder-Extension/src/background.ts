@@ -52,7 +52,8 @@ async function callDecryptor(downloadUrl: string, password: string, filename: st
         "com.martinalebachew.asunderdecryptor",
         { downloadUrl: downloadUrl, password: password, filename: filename },
         function (response) {
-            if (!response.success) throw `[PDF DECRYPT ERR] Native decryptor failed.`;
+            if (!response.success) throw `[PDF DECRYPT ERR] Native decryptor failed. ${response.error}`;
+
             chrome.tabs.create({
                 url: "file://" + response.filename
             })
