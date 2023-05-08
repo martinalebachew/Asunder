@@ -87,11 +87,12 @@ json fetchRequest() {
   return request;
 }
 
-void sendResponse(bool success) {
+void sendResponse(bool success, std::string field, std::string value) {
   // TODO: implement sending error message / downloaded filename
   // Set response fields
   json response;
   response["success"] = success;
+  response[field] = value;
 
   // Send response, according to the native messaging protocol
   std::string responseString = response.dump();
@@ -102,6 +103,14 @@ void sendResponse(bool success) {
   }
 
   std::cout << responseString.c_str() << std::flush;
+}
+
+void sendSuccess(std::string filename) {
+  sendResponse(true, "filename", filename);
+}
+
+void sendFailure(std::string message) {
+  sendResponse(false, "message", message);
 }
 
 int main(int argc, char **argv) {
@@ -119,7 +128,7 @@ int main(int argc, char **argv) {
   DataBuffer buffer;
   bool downloaded = downloadFile(downloadUrl.c_str(), &buffer);
   if (!downloaded) {
-    sendResponse(false);
+    sendFailure("Failed to download PDF!");
     return 1;
   }
 
@@ -133,7 +142,7 @@ int main(int argc, char **argv) {
   PDF::PDFDoc document(buffer.Shrink(), buffer.written);
   bool decrypted = document.InitStdSecurityHandler(password);
   if (!decrypted) {
-    sendResponse(false);
+    sendFailure("Failed to decrypt PDF!");
     return 1;
   }
 
@@ -144,6 +153,6 @@ int main(int argc, char **argv) {
   // Enable stdout logging for native messaging
   std::cout.rdbuf(old);
 
-  sendResponse(true);
+  sendSuccess(outputPath.string());
   return 0;  
 }
