@@ -16,25 +16,57 @@ namespace fs = boost::filesystem;
 using json = nlohmann::json;
 using namespace pdftron;
 
-size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-  size_t written = fwrite(ptr, size, nmemb, stream);
-  return written;
+typedef unsigned char byte;
+struct DataBuffer {
+  size_t written;
+  size_t capacity;
+  byte* buffer;
+
+  DataBuffer() {
+    capacity = 1024 * 1024 * 200; // Allocate 200MB
+    buffer = (byte*)malloc(capacity); // TODO: Check for nullptr
+    written = 0;
+  }
+
+  void Write(byte *newData, size_t size) {
+    if (written + size > capacity) Expand();
+    memcpy(buffer + written, newData, size);
+    written += size;
+  }
+
+  byte* Expand() {
+    capacity *= 1.5; // Aggressive expansion
+    buffer = (byte*)realloc(buffer, capacity);
+    return buffer;
+  }
+
+  byte* Shrink() {
+    capacity = written;
+    buffer = (byte*)realloc(buffer, capacity);
+    return buffer;
+  }
+
+  ~DataBuffer() {
+    free(buffer);
+  }
+};
+
+size_t writeData(void *ptr, size_t size, size_t nmemb, FILE *stream) {
+  DataBuffer *buffer = (DataBuffer*)stream;
+  buffer->Write((byte*)ptr, size * nmemb);
+  return size * nmemb;
 }
 
-bool downloadFile(const char *url, const char *filename) {
+bool downloadFile(const char *url, const DataBuffer *buffer) {
   CURL *curl = curl_easy_init();
   if (!curl) return false;
 
-  FILE *file = fopen(filename, "wb");
-  if (!file) return false;
-
   curl_easy_setopt(curl, CURLOPT_URL, url);
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-  curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
 
   CURLcode res = curl_easy_perform(curl);
   curl_easy_cleanup(curl);
-  fclose(file);
 
   return !res;
 }
@@ -56,6 +88,7 @@ json fetchRequest() {
 }
 
 void sendResponse(bool success) {
+  // TODO: implement sending error message / downloaded filename
   // Set response fields
   json response;
   response["success"] = success;
@@ -80,26 +113,30 @@ int main(int argc, char **argv) {
 
   // Obtain target paths
   fs::path currentPath(fs::current_path()); // TODO: Replace with user's downloads path
-  fs::path tempPath = currentPath / (filename + ".tmp");
   fs::path outputPath = currentPath / (filename + ".pdf");
 
   // Download PDF
-  bool downloaded = downloadFile(downloadUrl.c_str(), tempPath.c_str());
+  DataBuffer buffer;
+  bool downloaded = downloadFile(downloadUrl.c_str(), &buffer);
   if (!downloaded) {
     sendResponse(false);
     return 1;
   }
 
   // Decrypt PDF
-  // TODO: Implement temp buffer
   // TODO: Implement exception handling
 
   // Disable PDFNet logging by redirecting stdout
   std::streambuf *old = std::cout.rdbuf(nullptr);
 
   PDFNet::Initialize(PDFTRON_KEY);
-  PDF::PDFDoc document(tempPath.string());
-  document.InitStdSecurityHandler(password);
+  PDF::PDFDoc document(buffer.Shrink(), buffer.written);
+  bool decrypted = document.InitStdSecurityHandler(password);
+  if (!decrypted) {
+    sendResponse(false);
+    return 1;
+  }
+
   document.RemoveSecurity();
   document.Save(outputPath.string(), SDF::SDFDoc::e_linearized);
   PDFNet::Terminate();
@@ -108,4 +145,5 @@ int main(int argc, char **argv) {
   std::cout.rdbuf(old);
 
   sendResponse(true);
+  return 0;  
 }
