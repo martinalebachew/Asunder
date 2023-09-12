@@ -12,7 +12,7 @@ find_package(CURL REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/dep/PDFNetC/Headers)
 link_directories(${CMAKE_SOURCE_DIR}/dep/PDFNetC/Lib)
 
-set(SOURCE_FILES src/decryptor.cpp)
+file(GLOB SOURCE_FILES src/*.cpp)
 add_executable(decryptor ${SOURCE_FILES})
 
 target_link_libraries(decryptor ${used_libs})
