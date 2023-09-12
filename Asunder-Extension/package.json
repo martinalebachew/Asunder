@@ -6,8 +6,8 @@
     "compile-tsc": "rm -r ./dist & npx tsc",
     "copy-public": "cp -r ./public/* ./dist/",
     "build": "npm run compile-tsc && npm run copy-public",
-    "eslint": "npx eslint \"src/**\"",
-    "eslint-fix": "npx eslint \"src/**\" --fix"
+    "lint": "npx eslint \"src/**\"",
+    "lint-fix": "npx eslint \"src/**\" --fix"
   },
   "repository": {
     "type": "git",
