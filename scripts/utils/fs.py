@@ -1,5 +1,11 @@
-import shutil, os
+import shutil, os, stat
 from utils.logging import *
+
+def remove_readonly(func, path, _):
+  # Change file permissions and reattempt the removal
+  os.chmod(path, stat.S_IWRITE)
+  os.remove(path)
+
 
 def remove_directory(path, ignore_file_not_found=True):
   __remove_impl(path, ignore_file_not_found, directory=True)
@@ -12,7 +18,7 @@ def remove_file(path, ignore_file_not_found=True):
 def __remove_impl(path, ignore_file_not_found, directory):
   try:
     if directory:
-      shutil.rmtree(path)
+      shutil.rmtree(path, onerror=remove_readonly)
     else:
       os.remove(path)
 
