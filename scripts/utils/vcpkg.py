@@ -29,6 +29,8 @@ def check_packages():
       print_error(f"vcpkg package {required} not installed")
       exit()
 
+  print_success("All required packages installed")
+
 
 def get_cmake_toolchain_flag():
   _, output = run_shell("vcpkg integrate install")
