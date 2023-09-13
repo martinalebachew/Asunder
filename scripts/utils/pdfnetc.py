@@ -26,13 +26,14 @@ def determine_source():
     exit()
 
 
-def get_pdfnetc(target_path):
-  remove_directory(target_path)
-
-  temp_dir = join(target_path, "temp")
+def get_pdfnetc(dependencies_dir):
+  remove_directory(dependencies_dir)
+  temp_dir = join(dependencies_dir, "tmp")
   source_dir = join(temp_dir, determine_source())
-  
-  clone("martinalebachew/PDFNetC", temp_dir)
-  move(source_dir, target_path)
+  pdfnetc_dir = join(dependencies_dir, "PDFNetC")
 
+  clone("martinalebachew/PDFNetC", temp_dir, shallow=True)
+  move(source_dir, pdfnetc_dir, ignore_file_not_found=False)
   remove_directory(temp_dir)
+
+  print_success("Downloaded PDFNetC")
