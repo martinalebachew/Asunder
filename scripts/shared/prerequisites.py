@@ -4,6 +4,7 @@ from utils.logging import *
 # (executable, readable_name)
 
 shared_prerequisites = [
+  ("git-lfs", "Git LFS"),
   ("cmake", "CMake"),
   ("vcpkg", "vcpkg"),
 ]
