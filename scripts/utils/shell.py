@@ -3,9 +3,13 @@ from utils.logging import *
 
 def run_shell(command):
   process = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT, text=True)
-  return_code = process.wait()
-  output = process.stdout.read()
-  return (return_code, output)
+  stdout, stderr = process.communicate()
+
+  divider = "\n" if stdout and stderr else ""
+  stdout = stdout if stdout else ""
+  stderr = stderr if stderr else ""
+  output = stdout + divider + stderr
+  return (process.returncode, output)
 
 
 def run_script(path):
