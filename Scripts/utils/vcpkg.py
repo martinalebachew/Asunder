@@ -1,4 +1,4 @@
-from sys import platform
+import platform
 from utils.logging import *
 from utils.shell import *
 from shared.vcpkg import *
@@ -19,7 +19,7 @@ def get_installed_packages(triplets=False):
 def check_packages():
   # Windows requires explicit x64-windows triplets
   # vcpkg releases before September 2023 default to x86 on Windows
-  is_windows = platform == "win32"
+  is_windows = platform.system() == "Windows"
   installed = get_installed_packages(triplets=is_windows)
   for required in required_packages:
     required += ":x64-windows" if is_windows else ""

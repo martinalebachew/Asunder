@@ -1,4 +1,4 @@
-from sys import platform
+import platform
 from utils.logging import *
 
 # (executable, readable_name)
@@ -23,12 +23,12 @@ linux_prerequisites = shared_prerequisites + [
 ]
 
 def get_prerequisites():
-  match platform:
-    case "win32":
+  match platform.system():
+    case "Windows":
       return windows_prerequisites
-    case "darwin":
+    case "Darwin":
       return macos_prerequisites
-    case "linux":
+    case "Linux":
       return linux_prerequisites
     case _:
       print_error(f"Unsupported platform: {platform}")
