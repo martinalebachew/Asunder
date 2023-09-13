@@ -15,6 +15,8 @@ def get_installed_packages(triplets=False):
       print_error("Failed to parse vcpkg packages")
       exit()
 
+  return packages
+
 
 def check_packages():
   # Windows requires explicit x64-windows triplets
