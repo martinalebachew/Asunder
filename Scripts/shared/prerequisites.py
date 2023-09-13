@@ -23,7 +23,8 @@ linux_prerequisites = shared_prerequisites + [
 ]
 
 def get_prerequisites():
-  match platform.system():
+  os = platform.system()
+  match os:
     case "Windows":
       return windows_prerequisites
     case "Darwin":
@@ -31,6 +32,6 @@ def get_prerequisites():
     case "Linux":
       return linux_prerequisites
     case _:
-      print_error(f"Unsupported platform: {platform}")
+      print_error(f"Unsupported OS: {os}")
       exit()
 

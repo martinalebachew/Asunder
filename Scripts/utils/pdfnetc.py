@@ -4,7 +4,7 @@ from utils.logging import *
 from utils.fs import *
 from utils.git import *
 
-platform = platform.system()
+os = platform.system()
 arch = platform.machine()
 
 
@@ -13,16 +13,16 @@ def determine_source():
     print_error(f"Unsupported architecture: {arch}")
     exit()
 
-  if platform == "Linux" and arch == "AMD64":
+  if os == "Linux" and arch == "AMD64":
     return "Linux-x64"
-  elif platform == "Linux" and arch == "arm64":
+  elif os == "Linux" and arch == "arm64":
     return "Linux-arm64"
-  elif platform == "Windows":
+  elif os == "Windows":
     return "Windows-x64"
-  elif platform == "Darwin":
+  elif os == "Darwin":
     return "macOS-universal"
   else:
-    print_error(f"Unsupported platform: {platform}")
+    print_error(f"Unsupported OS: {os}")
     exit()
 
 
