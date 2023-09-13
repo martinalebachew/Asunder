@@ -12,7 +12,7 @@ def get_installed_packages(triplets=False):
     if divider_index != -1:
       packages.append(line[:divider_index])
     else:
-      print_error(f"Failed to parse vcpkg packages")
+      print_error("Failed to parse vcpkg packages")
       exit()
 
 
@@ -26,3 +26,13 @@ def check_packages():
     if required not in installed:
       print_error(f"vcpkg package {required} not installed")
       exit()
+
+
+def get_cmake_toolchain_flag():
+  _, output = run_shell("vcpkg integrate install")
+  for line in output.splitlines():
+    if line.startswith("CMake projects should use: "):
+      return line.split(":")[1].strip()
+    
+  print_error("Failed to parse vcpkg CMake toolchain flag")
+  exit()
