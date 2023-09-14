@@ -58,6 +58,19 @@ def copy_file(source, destination, ignore_file_not_found=True):
       exit()
 
 
+def create_directory(path, ignore_file_exists=True):
+  try:
+    os.mkdir(path)
+    print_success(f"Created directory {path}")
+
+  except Exception as error:
+    if isinstance(error, FileExistsError) and ignore_file_exists:
+      print_notice(f"Skipped creating directory {path}")
+    else:
+      print_error(f"Failed to create directory {path}")
+      exit()
+
+
 def resolve_path(path):
   return path.replace("~", os.path.expanduser("~"))
 
