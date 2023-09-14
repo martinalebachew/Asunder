@@ -4,10 +4,15 @@ from utils.vcpkg import *
 from utils.prerequisites import *
 from utils.pdfnetc import *
 
-def get_dependencies_dir():
+def get_decryptor_dir():
   scripts_dir = dirname(__file__)
   project_root = dirname(scripts_dir)
   decryptor_dir = join(project_root, "decryptor")
+  return decryptor_dir
+
+
+def get_dependencies_dir():
+  decryptor_dir = get_decryptor_dir()
   dependencies_dir = join(decryptor_dir, "dep")
   return dependencies_dir
 
