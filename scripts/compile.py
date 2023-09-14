@@ -18,13 +18,19 @@ def get_dependencies_dir():
   return dependencies_dir
 
 
+def get_build_dir():
+  decryptor_dir = get_decryptor_dir()
+  build_dir = join(decryptor_dir, "build")
+  return build_dir
+
+
 def configure_build():
   cmake_command = "cmake .."
   if platform.system() == "Windows":
     cmake_command += " -A x64"
 
   cmake_command += f" {get_cmake_toolchain_flag()}"
-  build_dir = join(get_decryptor_dir(), "build")
+  build_dir = get_build_dir()
   create_directory(build_dir)
   return_code, _ = run_shell(cmake_command, cwd=build_dir)
   
