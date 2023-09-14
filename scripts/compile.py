@@ -22,7 +22,6 @@ def run_cmake():
   cmake_command = "cmake .."
   if platform.system() == "Windows":
     cmake_command += " -A x64"
-    cmake_command += " --config Release"
 
   cmake_command += f" {get_cmake_toolchain_flag()}"
   build_dir = join(get_decryptor_dir(), "build")
