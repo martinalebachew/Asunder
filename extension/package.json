@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "compile-tsc": "rm -r ./dist & npx tsc",
-    "copy-public": "cp -r ./public/* ./dist/",
-    "build": "npm run compile-tsc && npm run copy-public",
+    "compile": "shx rm -r ./dist & npx tsc",
+    "build": "npm run compile && shx cp -r ./public/* ./dist/",
     "lint": "npx eslint \"src/**\"",
     "lint-fix": "npx eslint \"src/**\" --fix"
   },
@@ -23,6 +22,7 @@
     "@types/chrome": "^0.0.234",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "eslint": "^8.49.0",
+    "shx": "^0.3.4",
     "typescript": "^5.0.4"
   }
 }
