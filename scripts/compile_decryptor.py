@@ -2,8 +2,9 @@ import platform
 from os.path import join, dirname
 from utils.fs import *
 from utils.vcpkg import *
-from utils.prerequisites import *
 from utils.pdfnetc import *
+from utils.prerequisites import *
+from shared.prerequisites import *
 
 def get_decryptor_dir():
   scripts_dir = dirname(__file__)
@@ -57,7 +58,7 @@ def build_executable():
 
 
 def compile_decryptor():
-  check_prerequisites()
+  check_prerequisites(decryptor_prerequisites)
   check_packages()
   get_pdfnetc(get_dependencies_dir())
   configure_build()
