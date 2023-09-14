@@ -1,3 +1,4 @@
+import platform
 from os.path import join, dirname
 from utils.fs import *
 from utils.vcpkg import *
@@ -17,7 +18,25 @@ def get_dependencies_dir():
   return dependencies_dir
 
 
+def run_cmake():
+  cmake_command = "cmake .."
+  if platform.system() == "Windows":
+    cmake_command += " -A x64"
+    cmake_command += " --config Release"
+
+  cmake_command += f" {get_cmake_toolchain_flag()}"
+  build_dir = join(get_decryptor_dir(), "build")
+  create_directory(build_dir)
+  return_code, _ = run_shell(cmake_command, cwd=build_dir)
+  if return_code == 0:
+    print_success("Configured build using CMake")
+  else:
+    print_error("Failed to configure build using CMake")
+    exit()
+
+
 if __name__ == "__main__":
   check_prerequisites()
   check_packages()
   get_pdfnetc(get_dependencies_dir())
+  run_cmake()
