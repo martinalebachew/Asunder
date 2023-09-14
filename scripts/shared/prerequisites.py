@@ -36,3 +36,9 @@ def get_prerequisites():
       print_error(f"Unsupported OS: {os}")
       exit()
 
+
+decryptor_prerequisites = get_prerequisites()
+extension_prerequisites = [
+  ("node", "Node.js"),
+  ("npm", "Node Package Manager"),
+]
