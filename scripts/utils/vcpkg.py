@@ -36,7 +36,7 @@ def get_cmake_toolchain_flag():
   _, output = run_shell("vcpkg integrate install")
   for line in output.splitlines():
     if line.startswith("CMake projects should use: "):
-      return line.split(":")[1].strip()
+      return line[line.find(":"):].strip()
     
   print_error("Failed to parse vcpkg CMake toolchain flag")
   exit()
