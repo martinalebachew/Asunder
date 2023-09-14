@@ -41,7 +41,7 @@ def configure_build():
     exit()
 
 
-def compile():
+def build_executable():
   cmake_command = "cmake --build ."
   if platform.system() == "Windows":
     cmake_command += " --config Release"
@@ -50,15 +50,19 @@ def compile():
   return_code, _ = run_shell(cmake_command, cwd=build_dir)
   
   if return_code == 0:
-    print_success("Compiled decryptor")
+    print_success("Built decryptor")
   else:
-    print_error("Failed to compile decryptor")
+    print_error("Failed to build decryptor")
     exit()
 
 
-if __name__ == "__main__":
+def compile_decryptor():
   check_prerequisites()
   check_packages()
   get_pdfnetc(get_dependencies_dir())
   configure_build()
-  compile()
+  build_executable()
+
+
+if __name__ == "__main__":
+  compile_decryptor()
