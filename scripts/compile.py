@@ -18,7 +18,7 @@ def get_dependencies_dir():
   return dependencies_dir
 
 
-def run_cmake():
+def configure_build():
   cmake_command = "cmake .."
   if platform.system() == "Windows":
     cmake_command += " -A x64"
@@ -28,6 +28,7 @@ def run_cmake():
   build_dir = join(get_decryptor_dir(), "build")
   create_directory(build_dir)
   return_code, _ = run_shell(cmake_command, cwd=build_dir)
+  
   if return_code == 0:
     print_success("Configured build using CMake")
   else:
@@ -39,4 +40,4 @@ if __name__ == "__main__":
   check_prerequisites()
   check_packages()
   get_pdfnetc(get_dependencies_dir())
-  run_cmake()
+  configure_build()
