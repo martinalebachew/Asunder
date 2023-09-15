@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.26)
 project(decryptor)
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin)
+
 include_directories(${Boost_INCLUDE_DIRS})
 find_package(Boost REQUIRED COMPONENTS filesystem)
 set(used_libs ${Boost_FILESYSTEM_LIBRARY})
