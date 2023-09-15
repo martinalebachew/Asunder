@@ -4,6 +4,9 @@
 # Dependencies directory
 dep
 
+# Binaries directory
+bin
+
 # JetBrains IDEs
 .idea
 
