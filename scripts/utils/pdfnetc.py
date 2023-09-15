@@ -3,12 +3,16 @@ from os.path import join
 from utils.logging import *
 from utils.fs import *
 from utils.git import *
+from utils.download import *
+from utils.archives import *
 
 os = platform.system()
 arch = platform.machine()
 
+pdfnetc_mirror = lambda version: f"https://raw.githubusercontent.com/martinalebachew/Asunder/mirror/pdfnetc/{version}.zip"
 
-def determine_source():
+
+def determine_version():
   if arch not in ["AMD64", "arm64"]:
     print_error(f"Unsupported architecture: {arch}")
     exit()
@@ -27,13 +31,20 @@ def determine_source():
 
 
 def get_pdfnetc(dependencies_dir):
-  remove_directory(dependencies_dir)
-  temp_dir = join(dependencies_dir, "tmp")
-  source_dir = join(temp_dir, determine_source())
-  pdfnetc_dir = join(dependencies_dir, "PDFNetC")
+  try:
+    remove_directory(dependencies_dir)
+    create_directory(dependencies_dir)
 
-  clone("martinalebachew/PDFNetC", temp_dir, shallow=True)
-  move(source_dir, pdfnetc_dir, ignore_file_not_found=False)
-  remove_directory(temp_dir)
+    version = determine_version()
+    archive_path = f"{join(dependencies_dir, version)}.zip"
+    pdfnetc_dir = join(dependencies_dir, "PDFNetC")
 
-  print_success("Downloaded PDFNetC")
+    download(pdfnetc_mirror(version), archive_path)
+    shutil.unpack_archive(archive_path, pdfnetc_dir)
+    remove_file(archive_path, ignore_file_not_found=False)
+
+    print_success("Downloaded PDFNetC")
+
+  except:
+    print_error("Failed to download PDFNetC")
+    exit()
