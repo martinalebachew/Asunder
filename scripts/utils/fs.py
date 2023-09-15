@@ -72,7 +72,7 @@ def create_directory(path, ignore_file_exists=True):
 
 
 def resolve_path(path):
-  return path.replace("~", os.path.expanduser("~"))
+  return os.path.expandvars(os.path.expanduser(path))
 
 
 def exec_path(exec_name):
