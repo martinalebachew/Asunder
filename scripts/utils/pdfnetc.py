@@ -31,20 +31,13 @@ def determine_version():
 
 
 def get_pdfnetc(dependencies_dir):
-  try:
-    remove_directory(dependencies_dir)
-    create_directory(dependencies_dir)
+  remove_directory(dependencies_dir)
+  create_directory(dependencies_dir)
 
-    version = determine_version()
-    archive_path = f"{join(dependencies_dir, version)}.zip"
-    pdfnetc_dir = join(dependencies_dir, "PDFNetC")
+  version = determine_version()
+  archive_path = f"{join(dependencies_dir, version)}.zip"
+  pdfnetc_dir = join(dependencies_dir, "PDFNetC")
 
-    download(pdfnetc_mirror(version), archive_path)
-    shutil.unpack_archive(archive_path, pdfnetc_dir)
-    remove_file(archive_path, ignore_file_not_found=False)
-
-    print_success("Downloaded PDFNetC")
-
-  except:
-    print_error("Failed to download PDFNetC")
-    exit()
+  download(pdfnetc_mirror(version), archive_path)
+  unpack(archive_path, pdfnetc_dir)
+  remove_file(archive_path, ignore_file_not_found=False)
