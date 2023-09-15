@@ -1,5 +1,5 @@
 import shutil
-from os.path import dirname, join, isdir, basename
+from os.path import dirname, join, isdir
 from glob import glob
 
 def pack():
@@ -8,8 +8,7 @@ def pack():
 
   for dir_path in glob(join(root_dir, "*")):
     if isdir(dir_path) and dir_path != scripts_dir:
-      output_file = join(root_dir, basename(dir_path))
-      shutil.make_archive(output_file, "zip", dir_path)
+      shutil.make_archive(dir_path, "zip", dir_path)
       shutil.rmtree(dir_path)
 
       print(f"Packed {dir_path}")
