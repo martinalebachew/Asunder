@@ -32,6 +32,7 @@ def configure_build():
 
   cmake_command += f" {get_cmake_toolchain_flag()}"
   build_dir = get_build_dir()
+  remove_directory(build_dir)
   create_directory(build_dir)
   return_code, _ = run_shell(cmake_command, cwd=build_dir)
   
