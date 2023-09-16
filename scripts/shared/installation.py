@@ -4,7 +4,7 @@ from utils.fs import resolve_path
 from utils.logging import *
 
 os = platform.system()
-installation_dir = r"~/.asunder" if os != "Windows" else r"~\.asunder"
+installation_dir = "~/.asunder" if os != "Windows" else r"~\.asunder"
 installation_dir = resolve_path(installation_dir)
 
 
@@ -26,3 +26,6 @@ def get_native_host_manifest_dir():
 native_host_manifest_dir = get_native_host_manifest_dir()
 native_host_manifest_dir = resolve_path(native_host_manifest_dir)
 native_host_manifest_path = join(native_host_manifest_dir, native_host_filename)
+
+windows_registry_key = rf"HKEY_CURRENT_USER\SOFTWARE\Google\Chrome\NativeMessagingHosts\_{native_host_identifier}_"
+windows_registry_command = f"REG ADD {windows_registry_key} /ve /t REG_SZ /d {native_host_identifier} /f"
