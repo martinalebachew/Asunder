@@ -9,7 +9,7 @@ installation_dir = resolve_path(installation_dir)
 
 
 native_host_identifier = "com.martinalebachew.asunder"
-native_host_filename = f"_{native_host_identifier}_.json"
+native_host_filename = f"{native_host_identifier}.json"
 
 def get_native_host_manifest_dir():
   if os == "Windows":
@@ -27,5 +27,5 @@ native_host_manifest_dir = get_native_host_manifest_dir()
 native_host_manifest_dir = resolve_path(native_host_manifest_dir)
 native_host_manifest_path = join(native_host_manifest_dir, native_host_filename)
 
-windows_registry_key = rf"HKEY_CURRENT_USER\SOFTWARE\Google\Chrome\NativeMessagingHosts\_{native_host_identifier}_"
+windows_registry_key = rf"HKEY_CURRENT_USER\SOFTWARE\Google\Chrome\NativeMessagingHosts\{native_host_identifier}"
 windows_registry_command = f"REG ADD {windows_registry_key} /ve /t REG_SZ /d {native_host_identifier} /f"
