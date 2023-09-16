@@ -28,4 +28,4 @@ native_host_manifest_dir = resolve_path(native_host_manifest_dir)
 native_host_manifest_path = join(native_host_manifest_dir, native_host_filename)
 
 windows_registry_key = rf"HKEY_CURRENT_USER\SOFTWARE\Google\Chrome\NativeMessagingHosts\{native_host_identifier}"
-windows_registry_command = f"REG ADD {windows_registry_key} /ve /t REG_SZ /d {native_host_identifier} /f"
+windows_registry_command = f"REG ADD {windows_registry_key} /ve /t REG_SZ /d {native_host_manifest_path} /f"
