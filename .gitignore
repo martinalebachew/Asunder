@@ -1,20 +1,20 @@
 # macOS files
 .DS_Store
 
-# Dependencies directory
+# Decryptor directories
+dep
+bin
+build
 dep
 
-# Binaries directory
-bin
+# Private key files
+*.pem
 
 # JetBrains IDEs
 .idea
 
 # VSCode
 .vscode
-
-# build files
-build
 
 ## NodeJS
 # Logs
