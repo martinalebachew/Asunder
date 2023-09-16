@@ -1,3 +1,5 @@
+from os import getcwd
+from os.path import join
 from utils.shell import *
 from utils.logging import *
 from base64 import b64encode
@@ -8,6 +10,7 @@ def generate_keyfile(filename="key.pem"):
 
   if return_code == 0:
     print_success(f"Generated keyfile {filename}")
+    return join(getcwd(), filename)
 
   else:
     print_error(f"Failed to generate keyfile {filename}")
