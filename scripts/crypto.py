@@ -1,6 +1,7 @@
 from utils.shell import *
 from utils.logging import *
 from base64 import b64encode
+from hashlib import sha256
 
 def generate_keyfile(filename="key.pem"):
   return_code, _ = run_shell(f"openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt -out \"{filename}\"")
@@ -29,3 +30,10 @@ def __get_public_key_impl(filename="key.pem"):
 def get_public_key(filename="key.pem"):
   public_key = __get_public_key_impl(filename)
   return b64encode(public_key).decode()
+  
+
+def get_extension_id(filename="key.pem"):
+  public_key_bytes = __get_public_key_impl(filename)
+  id = sha256(public_key_bytes).hexdigest()[:32]
+  id = id.translate(str.maketrans("0123456789abcdef", "abcdefghijklmnop"))
+  return id
