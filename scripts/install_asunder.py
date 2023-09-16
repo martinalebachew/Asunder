@@ -1,5 +1,7 @@
 import json, platform
-from os.path import join
+from tkinter.filedialog import askopenfilename as filedialog
+from os.path import join, isfile, basename
+from os import getcwd
 from compile_decryptor import *
 from build_extension import *
 from utils.fs import *
@@ -56,11 +58,27 @@ def register_native_host_manifest(extension_id):
       exit()
 
 
+def pack_extension(directory, keyfile):
+  chrome_path = chrome_executable
+
+  if not isfile(chrome_path):
+    chrome_path = filedialog(title="Select Chrome Executable")
+
+  return_code, _ = run_shell(chrome_pack_command(chrome_path, directory, keyfile))
+
+  if return_code == 0:
+    print_success("Packed extension into CRX file")
+    return f"{directory}.crx"
+  else:
+    print_error("Failed to pack extension into CRX file")
+    exit()
+
+
 def install_asunder():
   check_prerequisites(installation_prerequisites)
   remove_directory(installation_dir)
  
-  generate_keyfile()
+  keyfile = generate_keyfile()
   key_field = get_public_key()
   add_key_to_extension_manifest(key_field)
   
@@ -69,6 +87,18 @@ def install_asunder():
  
   extension_id = get_extension_id()
   register_native_host_manifest(extension_id)
+  
+  dist_dir = join(get_extension_dir(), "dist")
+  old_crx_file = pack_extension(dist_dir, keyfile)
+
+  crx_file = join(installation_dir, "asunder.crx")
+  move(old_crx_file, crx_file)
+
+  remove_file(keyfile)
+
+  print_success("Installed Asunder")
+  print_notice(f"Drag the extension file ({crx_file}) into chrome://extensions to install it")
+  print_notice("Then reopen Chrome to apply changes")
 
 
 if __name__ == "__main__":
