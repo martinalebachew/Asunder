@@ -16,7 +16,7 @@ def generate_keyfile(filename="key.pem"):
 
 def __get_public_key_impl(filename="key.pem"):
   return_code, output = run_shell(f"openssl rsa -in {filename} -pubout -outform DER", bytes=True)
-  public_key = output.split(b"\r\n")[1]
+  public_key = output.split(b"\n")[1]
 
   if return_code == 0:
     print_success(f"Calculated public key from {filename}")
