@@ -13,7 +13,7 @@ native_host_filename = f"{native_host_identifier}.json"
 
 def get_native_host_manifest_dir():
   if os == "Windows":
-    return join(installation_dir, native_host_filename)
+    return installation_dir
   elif os == "Darwin":
     return "~/.config/google-chrome/NativeMessagingHosts"
   elif os == "Linux":
