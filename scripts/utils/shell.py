@@ -1,13 +1,18 @@
 from subprocess import Popen, PIPE, STDOUT
 from utils.logging import *
 
-def run_shell(command, cwd=None):
-  process = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT, text=True, cwd=cwd)
+def run_shell(command, cwd=None, bytes=False):
+  process = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT, text=(not bytes), cwd=cwd)
   stdout, stderr = process.communicate()
 
-  divider = "\n" if stdout and stderr else ""
-  stdout = stdout if stdout else ""
-  stderr = stderr if stderr else ""
+  divider = b"\n" if stdout and stderr else b""
+  stdout = stdout if stdout else b""
+  stderr = stderr if stderr else b""
+
+  divider = divider if bytes else str(divider)
+  stdout = stdout if bytes else str(stdout)
+  stderr = stderr if bytes else str(stderr)
+
   output = stdout + divider + stderr
   return (process.returncode, output)
 
