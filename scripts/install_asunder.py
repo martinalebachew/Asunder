@@ -13,24 +13,10 @@ from shared.installation import *
 
 os = platform.system()
 
-def add_key_to_extension_manifest(key_field):
-  dist_dir = join(get_extension_dir(), "dist")
-  manifest_path = join(dist_dir, "manifest.json")
-
-  with open(manifest_path, "r") as manifest_file:
-    manifest = json.load(manifest_file)
-
-  manifest["key"] = key_field
-
-  with open(manifest_path, "w") as manifest_file:
-    json.dump(manifest, manifest_file, indent=2)
-
-  print_success("Added key to manifest file")
-
 
 def register_native_host_manifest(extension_id):
   decryptor_file = "decryptor.exe" if os == "Windows" else "decryptor"
-  decryptor_path = join(installation_dir, decryptor_file)
+  decryptor_path = join(installation_dir, "decryptor", decryptor_file)
 
   manifest = {
     "name": native_host_identifier,
@@ -58,47 +44,24 @@ def register_native_host_manifest(extension_id):
       exit()
 
 
-def pack_extension(directory, keyfile):
-  chrome_path = chrome_executable
-
-  if not isfile(chrome_path):
-    chrome_path = filedialog(title="Select Chrome Executable")
-
-  return_code, _ = run_shell(chrome_pack_command(chrome_path, directory, keyfile))
-
-  if return_code == 0:
-    print_success("Packed extension into CRX file")
-    return f"{directory}.crx"
-  else:
-    print_error("Failed to pack extension into CRX file")
-    exit()
-
-
 def install_asunder():
   check_prerequisites(installation_prerequisites)
   remove_directory(installation_dir)
- 
-  keyfile = generate_keyfile()
-  key_field = get_public_key()
-  add_key_to_extension_manifest(key_field)
-  
+   
   binaries_dir = join(get_decryptor_dir(), "bin")
-  copy_directory(binaries_dir, installation_dir, ignore_file_not_found=False)
+  decryptor_installation_dir = join(installation_dir, "decryptor")
+  copy_directory(binaries_dir, decryptor_installation_dir, ignore_file_not_found=False)
  
   extension_id = get_extension_id()
   register_native_host_manifest(extension_id)
   
   dist_dir = join(get_extension_dir(), "dist")
-  old_crx_file = pack_extension(dist_dir, keyfile)
-
-  crx_file = join(installation_dir, "asunder.crx")
-  move(old_crx_file, crx_file)
-
-  remove_file(keyfile)
+  extension_installation_dir = join(installation_dir, "extension")
+  copy_directory(dist_dir, extension_installation_dir, ignore_file_not_found=False)
+  install_extension()
 
   print_success("Installed Asunder")
-  print_notice(f"Drag the extension file ({crx_file}) into chrome://extensions to install it")
-  print_notice("Then reopen Chrome to apply changes")
+  print_notice("Reopen Chrome to apply changes")
 
 
 if __name__ == "__main__":
