@@ -1,5 +1,5 @@
 import platform
-from os import join
+from os.path import join
 from utils.fs import resolve_path
 from utils.logging import *
 
