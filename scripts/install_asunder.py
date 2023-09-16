@@ -5,8 +5,11 @@ from build_extension import *
 from utils.fs import *
 from utils.prerequisites import *
 from utils.crypto import *
+from utils.shell import *
 from shared.prerequisites import *
 from shared.installation import *
+
+os = platform.system()
 
 def add_key_to_extension_manifest(key_field):
   dist_dir = join(get_extension_dir(), "dist")
@@ -24,7 +27,6 @@ def add_key_to_extension_manifest(key_field):
 
 
 def register_native_host_manifest(extension_id):
-  os = platform.system()
   decryptor_file = "decryptor.exe" if os == "Windows" else "decryptor"
   decryptor_path = join(installation_dir, decryptor_file)
 
@@ -43,6 +45,15 @@ def register_native_host_manifest(extension_id):
     manifest_file.write(manifest)
 
   print_success("Created native host manifest")
+
+  if os == "Windows":
+    return_code, _ = run_shell(windows_registry_command)
+
+    if return_code == 0:
+      print_success("Added native host to the registry")
+    else:
+      print_error("Failed to add native host to the registry")
+      exit()
 
 
 def install_asunder():
