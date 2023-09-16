@@ -8,7 +8,7 @@ from utils.crypto import *
 from shared.prerequisites import *
 from shared.installation import *
 
-def add_key_to_manifest(key_field):
+def add_key_to_extension_manifest(key_field):
   dist_dir = join(get_extension_dir(), "dist")
   manifest_path = join(dist_dir, "manifest.json")
 
@@ -29,8 +29,8 @@ def install_asunder():
  
   generate_keyfile()
   key_field = get_public_key()
-  add_key_to_manifest(key_field)
- 
+  add_key_to_extension_manifest(key_field)
+
   bin_dir = join(get_decryptor_dir(), "bin")
   copy_directory(bin_dir, installation_dir)
 
