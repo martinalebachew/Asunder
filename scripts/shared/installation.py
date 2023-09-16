@@ -23,4 +23,6 @@ def get_native_host_manifest_dir():
     exit()
 
 
-native_host_manifest_path = join(get_native_host_manifest_dir(), native_host_filename)
+native_host_manifest_dir = get_native_host_manifest_dir()
+native_host_manifest_dir = resolve_path(native_host_manifest_dir)
+native_host_manifest_path = join(native_host_manifest_dir, native_host_filename)
