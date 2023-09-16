@@ -29,3 +29,16 @@ native_host_manifest_path = join(native_host_manifest_dir, native_host_filename)
 
 windows_registry_key = rf"HKEY_CURRENT_USER\SOFTWARE\Google\Chrome\NativeMessagingHosts\{native_host_identifier}"
 windows_registry_command = f"REG ADD {windows_registry_key} /ve /t REG_SZ /d {native_host_manifest_path} /f"
+
+
+def get_default_chrome_path():
+  if os == "Windows":
+    return r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+  elif os == "Darwin":
+    return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  else:
+    return "/usr/bin/google-chrome"
+
+
+chrome_executable = get_default_chrome_path()
+chrome_pack_command = lambda chrome_path, directory, keyfile: rf'"{chrome_path}" --pack-extension="{directory}" --pack-extension-key="{keyfile}"'
