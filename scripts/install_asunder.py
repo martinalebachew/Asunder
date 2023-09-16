@@ -30,6 +30,9 @@ def install_asunder():
   generate_keyfile()
   key_field = get_public_key()
   add_key_to_manifest(key_field)
+ 
+  bin_dir = join(get_decryptor_dir(), "bin")
+  copy_directory(bin_dir, installation_dir)
 
 
 if __name__ == "__main__":
