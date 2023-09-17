@@ -13,6 +13,12 @@ from shared.installation import *
 
 os = platform.system()
 
+def normalize_path(path):
+  if path[1:3] == r":/":
+    path = path[0].upper() + path[1:]
+  
+  return path
+
 
 def register_native_host_manifest(extension_id):
   decryptor_file = "decryptor.exe" if os == "Windows" else "decryptor"
