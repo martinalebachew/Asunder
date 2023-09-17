@@ -1,6 +1,5 @@
 import json, platform
 from hashlib import sha256
-from tkinter.filedialog import askopenfilename as filedialog
 from os.path import join, isfile
 from os import getcwd
 from compile_decryptor import *
@@ -69,7 +68,7 @@ def install_asunder():
 
   copy_directory(binaries_dir, decryptor_installation_dir, ignore_file_not_found=False)
 
-  extension_id = get_extension_id(installation_dir)
+  extension_id = get_extension_id(extension_installation_dir)
   register_native_host_manifest(extension_id)
   copy_directory(dist_dir, extension_installation_dir, ignore_file_not_found=False)
 
