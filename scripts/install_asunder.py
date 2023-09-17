@@ -1,7 +1,7 @@
 import json, platform
 from hashlib import sha256
 from tkinter.filedialog import askopenfilename as filedialog
-from os.path import join, isfile, basename
+from os.path import join, isfile
 from os import getcwd
 from compile_decryptor import *
 from build_extension import *
@@ -71,12 +71,12 @@ def install_asunder():
 
   extension_id = get_extension_id(installation_dir)
   register_native_host_manifest(extension_id)
-  
   copy_directory(dist_dir, extension_installation_dir, ignore_file_not_found=False)
-  install_extension()
 
   print_success("Installed Asunder")
-  print_notice("Reopen Chrome to apply changes")
+  print_notice("Add the extension to Chrome manually by going to chrome://extensions/")
+  print_notice("Enable Developer mode, click on Load unpacked, and navigate to:")
+  print_notice(extension_installation_dir)
 
 
 if __name__ == "__main__":
