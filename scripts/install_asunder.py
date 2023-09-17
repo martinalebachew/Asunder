@@ -1,12 +1,12 @@
 import json, platform
 from hashlib import sha256
-from os.path import join, isfile
-from os import getcwd
+from os.path import join
 from compile_decryptor import *
 from build_extension import *
 from utils.fs import *
 from utils.prerequisites import *
 from utils.shell import *
+from utils.logging import *
 from shared.prerequisites import *
 from shared.installation import *
 
@@ -33,7 +33,7 @@ def register_native_host_manifest(extension_id):
   manifest = {
     "name": native_host_identifier,
     "description": "Asunder Decryptor",
-    "path": f"{decryptor_path}",
+    "path": decryptor_path,
     "type": "stdio",
     "allowed_origins": [f"chrome-extension://{extension_id}/"]
   }
@@ -72,10 +72,9 @@ def install_asunder():
   register_native_host_manifest(extension_id)
   copy_directory(dist_dir, extension_installation_dir, ignore_file_not_found=False)
 
-  print_success("Installed Asunder")
-  print_notice("Add the extension to Chrome manually by going to chrome://extensions/")
-  print_notice("Enable Developer mode, click on Load unpacked, and navigate to:")
-  print_notice(extension_installation_dir)
+  print_success("\nInstalled Asunder")
+  print("Add the extension to Chrome manually by going to chrome://extensions/")
+  print(f"Enable Developer mode, click on Load unpacked, and navigate to: {extension_installation_dir}")
 
 
 if __name__ == "__main__":
