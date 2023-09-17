@@ -1,4 +1,5 @@
 import json, platform
+from hashlib import sha256
 from tkinter.filedialog import askopenfilename as filedialog
 from os.path import join, isfile, basename
 from os import getcwd
@@ -6,7 +7,6 @@ from compile_decryptor import *
 from build_extension import *
 from utils.fs import *
 from utils.prerequisites import *
-from utils.crypto import *
 from utils.shell import *
 from shared.prerequisites import *
 from shared.installation import *
@@ -18,6 +18,13 @@ def normalize_path(path):
     path = path[0].upper() + path[1:]
   
   return path
+
+
+def get_extension_id(path):
+  path = normalize_path(path)
+  id = sha256((path).encode()).hexdigest()[:32]
+  id = ''.join([chr(int(digit, base=16) + ord('a')) for digit in id])
+  return id
 
 
 def register_native_host_manifest(extension_id):
@@ -56,13 +63,15 @@ def install_asunder():
    
   binaries_dir = join(get_decryptor_dir(), "bin")
   decryptor_installation_dir = join(installation_dir, "decryptor")
-  copy_directory(binaries_dir, decryptor_installation_dir, ignore_file_not_found=False)
- 
-  extension_id = get_extension_id()
-  register_native_host_manifest(extension_id)
-  
+
   dist_dir = join(get_extension_dir(), "dist")
   extension_installation_dir = join(installation_dir, "extension")
+
+  copy_directory(binaries_dir, decryptor_installation_dir, ignore_file_not_found=False)
+
+  extension_id = get_extension_id(installation_dir)
+  register_native_host_manifest(extension_id)
+  
   copy_directory(dist_dir, extension_installation_dir, ignore_file_not_found=False)
   install_extension()
 
