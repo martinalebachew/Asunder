@@ -49,7 +49,7 @@ async function getDownloadUrl(licenseId: string, userId: string, bookId: string,
 
 async function callDecryptor(downloadUrl: string, password: string, filename: string) {
   chrome.runtime.sendNativeMessage(
-    "martinalebachew.asunderdecryptor",
+    "com.martinalebachew.asunder",
     { downloadUrl: downloadUrl, password: password, filename: filename },
     function (response) {
       if (!response.success) throw `[PDF DECRYPT ERR] Native decryptor failed. ${response.error}`;

@@ -45,9 +45,13 @@ def move(source, destination, ignore_file_not_found=True):
       exit()
 
 
-def copy_file(source, destination, ignore_file_not_found=True):
+def __copy_impl(source, destination, ignore_file_not_found, directory):
   try:
-    shutil.copyfile(source, destination)
+    if directory:
+      shutil.copytree(source, destination)
+    else:
+      shutil.copyfile(source, destination)
+
     print_success(f"Copied {source} -> {destination}")
 
   except Exception as error:
@@ -56,6 +60,14 @@ def copy_file(source, destination, ignore_file_not_found=True):
     else:
       print_error(f"Failed to copy {source} -> {destination}")
       exit()
+
+
+def copy_file(source, destination, ignore_file_not_found=True):
+  __copy_impl(source, destination, ignore_file_not_found, directory=False)
+
+
+def copy_directory(source, destination, ignore_file_not_found=True):
+  __copy_impl(source, destination, ignore_file_not_found, directory=True)
 
 
 def create_directory(path, ignore_file_exists=True):
@@ -72,7 +84,7 @@ def create_directory(path, ignore_file_exists=True):
 
 
 def resolve_path(path):
-  return path.replace("~", os.path.expanduser("~"))
+  return os.path.expandvars(os.path.expanduser(path))
 
 
 def exec_path(exec_name):

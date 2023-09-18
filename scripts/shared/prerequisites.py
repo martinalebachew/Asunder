@@ -38,7 +38,12 @@ def get_prerequisites():
 
 
 decryptor_prerequisites = get_prerequisites()
+
 extension_prerequisites = [
   ("node", "Node.js"),
   ("npm", "Node Package Manager"),
+]
+
+installation_prerequisites = [
+  ("openssl", "OpenSSL"),
 ]
