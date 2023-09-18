@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 
   // Obtain target paths
   fs::path currentPath(fs::current_path()); // TODO: Replace with user's downloads path
-  fs::path outputPath = currentPath / (filename + ".pdf");
+  fs::path outputPath = currentPath / filename;
 
   // Download PDF
   DataBuffer buffer;
