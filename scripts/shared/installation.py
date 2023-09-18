@@ -15,9 +15,9 @@ def get_native_host_manifest_dir():
   if os == "Windows":
     return installation_dir
   elif os == "Darwin":
-    return "~/.config/google-chrome/NativeMessagingHosts"
-  elif os == "Linux":
     return "~/Library/Application Support/Google/Chrome/NativeMessagingHosts"
+  elif os == "Linux":
+    return "~/.config/google-chrome/NativeMessagingHosts"
   else:
     print_error(f"Unsupported OS: {os}")
     exit()
