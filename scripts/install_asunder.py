@@ -13,15 +13,21 @@ from shared.installation import *
 os = platform.system()
 
 def normalize_path(path):
-  if path[1:3] == r":/":
-    path = path[0].upper() + path[1:]
-  
+  if os == "Windows" and path[0].islower() and path[1] == ':':
+    return path[0].upper() + path[1:]
+
   return path
 
 
-def get_extension_id(path):
+def encode_path(path):
   path = normalize_path(path)
-  id = sha256((path).encode()).hexdigest()[:32]
+  path_bytes = path.encode("utf-8" if os != "Windows" else "utf-16-le")
+  return path_bytes
+
+
+def get_extension_id(path):
+  path_bytes = encode_path(path)
+  id = sha256(path_bytes).hexdigest()[:32]
   id = ''.join([chr(int(digit, base=16) + ord('a')) for digit in id])
   return id
 
@@ -73,8 +79,8 @@ def install_asunder():
   copy_directory(dist_dir, extension_installation_dir, ignore_file_not_found=False)
 
   print_success("\nInstalled Asunder")
-  print("Add the extension to Chrome manually by going to chrome://extensions/")
-  print(f"Enable Developer mode, click on Load unpacked, and navigate to: {extension_installation_dir}")
+  print("Add the extension to Chrome manually by going to chrome://extensions")
+  print(f"Enable Developer mode, click on Load unpacked, and navigate to {extension_installation_dir}")
 
 
 if __name__ == "__main__":
