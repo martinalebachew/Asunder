@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
   #endif
 
   // Initialize log file
-  std::ofstream log("logs/latest.txt");
+  std::ofstream log("latest.txt");
 
   // Get request fields
   json request = BrowserIO::FetchRequest();
