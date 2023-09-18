@@ -7,7 +7,17 @@
 #include "pdf.hpp"
 #include <iostream>
 
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
+
 int main(int argc, char **argv) {
+  #ifdef _WIN32
+  // Change I/O mode to prevent Windows from tampering with stdout
+  _set_mode(_fileno(stdout), _O_BINARY);
+  #endif
+
   // Initialize log file
   std::ofstream log("logs/latest.txt");
 
