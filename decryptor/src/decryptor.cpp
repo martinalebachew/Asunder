@@ -15,7 +15,7 @@
 int main(int argc, char **argv) {
   #ifdef _WIN32
   // Change I/O mode to prevent Windows from tampering with stdout
-  _set_mode(_fileno(stdout), _O_BINARY);
+  _setmode(_fileno(stdout), _O_BINARY);
   #endif
 
   // Initialize log file
