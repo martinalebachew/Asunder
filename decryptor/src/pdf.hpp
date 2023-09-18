@@ -8,6 +8,9 @@
 
 #define PDFTRON_KEY "YOUR_TRIAL_KEY_HERE"
 
+void InitializePDFTron();
+void TerminatePDFTron();
+
 typedef unsigned char byte;
 
 class PDF {
@@ -16,7 +19,6 @@ private:
 
 public:
   PDF(byte* buffer, size_t size);
-  ~PDF();
 
   bool Decrypt(std::string password);
   void Save(std::string outputPath);

@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
   // Disable PDFNet logging by redirecting stdout
   std::streambuf *old = std::cout.rdbuf(nullptr);
 
+  InitializePDFTron();
   PDF document(buffer.Shrink(), buffer.GetWritten());
   if (!document.Decrypt(password)) {
     BrowserIO::SendFailure("Failed to decrypt PDF!");
@@ -39,6 +40,7 @@ int main(int argc, char **argv) {
   }
 
   document.Save(outputPath.string());
+  TerminatePDFTron();
   
   // Enable stdout logging for native messaging
   std::cout.rdbuf(old);
