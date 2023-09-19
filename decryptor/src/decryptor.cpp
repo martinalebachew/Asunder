@@ -6,10 +6,15 @@
 #include "download.hpp"
 #include "pdf.hpp"
 #include <iostream>
+#include <fcntl.h>
 
 #ifdef _WIN32
 #include <io.h>
-#include <fcntl.h>
+#define NULL_DEVICE "nul"
+#define O_WRONLY _O_WRONLY
+#else
+#include <unistd.h>
+#define NULL_DEVICE "/dev/null"
 #endif
 
 int main(int argc, char **argv) {
@@ -51,7 +56,11 @@ int main(int argc, char **argv) {
   // TODO: Implement exception handling
 
   // Disable PDFNet logging by redirecting stdout
-  std::streambuf *old = std::cout.rdbuf(nullptr);
+  fflush(stdout);
+  int stdout_backup_fd = dup(1);
+  int null_fd = open(NULL_DEVICE, O_WRONLY);
+  dup2(null_fd, 1);
+  close(null_fd);
 
   log << "Initializing PDFTron with key: " << PDFTRON_KEY << std::endl;
   InitializePDFTron();
@@ -74,7 +83,9 @@ int main(int argc, char **argv) {
   TerminatePDFTron();
   
   // Enable stdout logging for native messaging
-  std::cout.rdbuf(old);
+  fflush(stdout);
+  dup2(stdout_backup_fd, 1);
+  close(stdout_backup_fd);
 
   log << "Done." << std::endl;
   log.close();
