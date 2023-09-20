@@ -6,6 +6,7 @@
 #include "download.hpp"
 #include "pdf.hpp"
 #include <iostream>
+#include <chrono>
 #include <fcntl.h>
 
 #ifdef _WIN32
@@ -24,7 +25,16 @@ int main(int argc, char **argv) {
   #endif
 
   // Initialize log file
-  std::ofstream log("latest.txt");
+  using namespace std::chrono;
+  nanoseconds ns = duration_cast<nanoseconds>(
+      system_clock::now().time_since_epoch()
+  );
+
+  std::string log_name = std::to_string(ns.count());
+  log_name += ".log";
+  std::ofstream log(log_name);
+  // TODO: Move to logs folder
+  // TODO: Name regeneration on failure
 
   // Get request fields
   json request = BrowserIO::FetchRequest();
