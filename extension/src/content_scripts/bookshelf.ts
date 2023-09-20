@@ -17,14 +17,16 @@ function onUILoaded() {
 function pinButtonToBookCovers() {
   const bookshelf = document.getElementsByClassName("list box-sizing")[0];
   for (const book of bookshelf.children) {
-    const coverUrl = book.getElementsByTagName("img")[0].src;
-    const bookId = coverUrl.split("/").pop()!.split("_")[1];
+    if (book.classList.contains("book")) {
+      const coverUrl = book.getElementsByTagName("img")[0].src;
+      const bookId = coverUrl.split("/").pop()!.split("_")[1];
 
-    const downloadButton = document.createElement("img");
-    downloadButton.src = chrome.runtime.getURL("assets/icon-32.png");
-    downloadButton.addEventListener("click", () => {
-      download_port.postMessage({ bookId: bookId, token: token });
-    });
-    book.appendChild(downloadButton);
+      const downloadButton = document.createElement("img");
+      downloadButton.src = chrome.runtime.getURL("assets/icon-32.png");
+      downloadButton.addEventListener("click", () => {
+        download_port.postMessage({ bookId: bookId, token: token });
+      });
+      book.appendChild(downloadButton);
+    }
   }
 }
