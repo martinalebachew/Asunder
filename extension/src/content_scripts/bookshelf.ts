@@ -19,7 +19,7 @@ function pinButtonToBookCovers() {
   for (const book of bookshelf.children) {
     if (book.classList.contains("book")) {
       const coverUrl = book.getElementsByTagName("img")[0].src;
-      const bookId = coverUrl.split("/").pop()!.split("_")[1];
+      const bookId = coverUrl.match(/(?<=book_)\d+/)![0];
 
       const downloadButton = document.createElement("img");
       downloadButton.src = chrome.runtime.getURL("assets/icon-32.png");
