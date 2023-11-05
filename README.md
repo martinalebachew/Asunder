@@ -13,6 +13,23 @@ encryption and convert it to comply with most readers.
 > purposes only, and the author of this project is not responsible for any potential consequences
 > of using it.
 
+## Build & Install
+### Prerequisites
+- All operating systems - OpenSSL, Node.js, CMake and vcpkg.
+- Windows - Visual Studio 2019 or higher.
+- macOS - XCode Developer Tools.
+- Linux - make, gcc.
+
+### vcpkg
+- Make sure vcpkg is in path.
+- Install curl, nlohmann-json and boost-filesystem.
+- If you are using an older release (before September 2023) of vcpkg for Windows, specify the target triplet manually when installing the packages listed above.
+
+### Installation Scripts
+1. Get your key from [Apryse Developer Portal](https://dev.apryse.com/). Paste it into decryptor/src/pdf.hpp.
+2. Run scripts/install_asunder.py.
+3. Manually load the extension into Chrome, instructions will appear after compilation is done.
+
 ## Development Map
 ### Asunder-Extension
 - [x] Download buttons on bookshelf
